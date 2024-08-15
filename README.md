@@ -23,3 +23,11 @@ After cloning the repository, there are a few steps to get the webapp going
 - Start the containers by running `docker compose up --build` from the root directory
 - The database will be empty initially, you can fill it with mock data or ask Moff for a backup of the real database
 - Once the containers are running, the webserver should be running on port 80 (default for http)
+
+## Adding SQL Database
+- `docker container ls` to list active docker containers
+- `docker cp <path to backup file> <container name>-mysql-1:/backup.sql`
+- `docker exec -it <container name>-mysql-1 bash`
+- `mysql -u root -p ClipCache < /backup.sql`
+- Type in password from `mysql_root_password.txt`
+- `exit`
