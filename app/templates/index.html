@@ -1,54 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Clip Browser</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .hero {
-            background: url('https://via.placeholder.com/1920x400') no-repeat center center;
-            background-size: cover;
-            height: 400px;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-        .hero h1 {
-            font-size: 3rem;
-        }
-        .btn-custom {
-            background-color: #007bff;
-            color: white;
-            border: none;
-        }
-        .btn-custom:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="hero">
-            <div>
-                <h1>Welcome to Clip Browser</h1>
-                <p>Explore and search your favorite video clips</p>
-                <a href="/search" class="btn btn-custom btn-lg">Search Clips</a>
-            </div>
-        </div>
+{% extends "layout.html" %}
 
-        <div class="text-center my-5">
-            <h2>About This App</h2>
-            <p>This application allows you to search for and browse through a collection of video clips. Use the search feature to find clips by title or creator name.</p>
-            <a href="/search" class="btn btn-primary btn-lg">Start Searching</a>
-        </div>
+{% block title %} Home {% endblock %}
+
+<!-- Head content -->
+{% block head %}
+<style>
+    .hero {
+        background: url('https://via.placeholder.com/1920x400') no-repeat center center;
+        background-size: cover;
+        height: 400px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+    .hero h1 {
+        font-size: 3rem;
+    }
+    .btn-custom {
+        background-color: #007bff;
+        color: white;
+        border: none;
+    }
+    .btn-custom:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock %}
+
+<!-- Body content -->
+{% block content %}
+
+<div class="hero">
+    <div>
+        <h1>Welcome to Clip Browser</h1>
+        <p>Explore and search your favorite video clips</p>
+        <a href="/search" class="btn btn-custom btn-lg">Search Clips</a>
     </div>
+</div>
 
-    <!-- Optional JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+<div class="text-center my-5">
+    <h2>About This App</h2>
+    <p>This application allows you to search for and browse through a collection of video clips. Use the search feature to find clips by title or creator name.</p>
+    <a href="/search" class="btn btn-primary btn-lg">Start Searching</a>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+

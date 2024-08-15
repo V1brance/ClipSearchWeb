@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bradley Dragon Clips{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    {% block head %}
+    {% endblock %}
+    <style>
+        /* Custom Dark Theme Styles */
+        body {
+            background-color: #121212; /* Dark background color */
+            color: #e0e0e0; /* Light text color */
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #1e1e1e; /* Dark navbar background */
+            color: #e0e0e0;
+        }
+        .navbar-light .navbar-brand, .navbar-light .nav-link {
+            color: #f8f9fa; /* Light text color for navbar */
+        }
+        .navbar-light .navbar-brand:hover, .navbar-light .nav-link:hover {
+            color: #e0e0e0; /* Slightly lighter text color on hover */
+        }
+        .container {
+            background-color: #1e1e1e; /* Dark container background */
+            padding: 2rem; /* Some padding for content */
+        }
+        .btn-outline-success {
+            border-color: #e0e0e0; /* Button border color */
+            color: #e0e0e0; /* Button text color */
+        }
+        .btn-outline-success:hover {
+            background-color: #e0e0e0; /* Button background color on hover */
+            color: #121212; /* Button text color on hover */
+        }
+
+        /* Dark Theme Styles for Input Group */
+        .input-group .form-control {
+            background-color: #292929; /* Dark background for input */
+            color: #e0e0e0; /* Light text color for input */
+            border-color: #333; /* Dark border color for input */
+        }
+        .input-group .form-control::placeholder {
+            color: #b0b0b0; /* Lighter placeholder text color */
+        }
+        .input-group .btn-primary {
+            background-color: #007bff; /* Primary button color */
+            border-color: #007bff; /* Primary button border color */
+        }
+        .input-group .btn-primary:hover {
+            background-color: #0056b3; /* Darker button color on hover */
+            border-color: #0056b3; /* Darker button border color on hover */
+        }
+        .input-group .btn-primary:focus {
+            box-shadow: none; /* Remove box-shadow on focus */
+        }
+        .input-group-prepend .input-group-text {
+            background-color: #383838; /* Dark background for prepend text */
+            color: #e0e0e0; /* Light text color for prepend text */
+            border-color: #333; /* Dark border color for prepend text */
+        }
+        .grid-item {
+            border: 1px solid #535353;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        a {
+            color: #adadad; /* Light color for all links */
+        }
+        a:hover, a:focus {
+            color: #dbdbdb; /* Lighter color for links on hover and focus */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <a class="navbar-brand" href="/">Bradley Clip Search</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <form class="form-inline my-2 my-lg-0" method="get" action="/search">
+                <div class="input-group col">
+                    <input type="text" name="query" class="form-control" placeholder="Enter search term">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Optional JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>

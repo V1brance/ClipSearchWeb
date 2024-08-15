@@ -1,140 +1,135 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Clips</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <style>
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-            height: 0;
-            overflow: hidden;
-            max-width: 100%;
-            background: #000;
-        }
-        .video-container video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        .thumbnail {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-        }
-        .info {
-            padding: 10px;
-            text-align: center;
-        }
-        .info a {
-            text-decoration: none;
-            color: #007bff;
-        }
-        .info a:hover {
-            text-decoration: underline;
-        }
-        .grid-item {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        .no-results {
-            text-align: center;
-            font-size: 18px;
-        }
-        #AdvancedOptions {
-            margin-top: 10px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1 class="my-4">Search Clips</h1>
-        <form action="/search" method="get" class="mb-4">
-            <div class="form-row">
-                <div class="input-group col">
-                    <input type="text" name="query" class="form-control" placeholder="Enter search term">
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-primary">Search</button>
-                    </div>
-                </div>
-                <div class="col-md-auto">
-                    <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#AdvancedOptions" aria-expanded="false" aria-controls="AdvancedOptions">
-                        Advanced
-                        <i class="bi bi-chevron-double-down"></i>
-                    </button>
-                </div>
-            </div>
-            <div id="AdvancedOptions" class="form-row collapse">
-                <div class="input-group col">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Start Date:</span>
-                    </div>
-                    <input type="date" name="start-date" class="form-control">
-                </div>
-                <div class="input-group col">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">End Date:</span>
-                    </div>
-                    <input type="date" name="end-date" class="form-control">
-                </div>
-                <div class="col-md-auto">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Game:</span>
-                        </div>
-                        <select name="game" class="form-control">
-                            <option value="">All Games</option>
-                            {% for game in games %}
-                            <option value="{{ game.game_id }}">{{ game.game_name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </form>
-        <div class="row">
-            {% if clips %}
-                {% for clip in clips %}
-                <div class="col-md-6 mb-4">
-                    <div class="grid-item">
-                        <a href="{{ url_for('clip', clip_id=clip.clip_id) }}">
-                            <img src="{{ clip.thumbnail_url }}" alt="{{ clip.title }}" class="thumbnail">
-                        </a>
-                        <div class="info">
-                            <a href="{{ url_for('clip', clip_id=clip.clip_id) }}">{{ clip.title }}</a>
-                            <p>{{ clip.creator_name }}</p>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            {% else %}
-            <p class="no-results">No results found.</p>
-            {% endif %}
-        </div>
-        <p><a href="/" class="btn btn-secondary">Back to Home</a></p>
-    </div>
+{% extends "layout.html" %}
 
-    <!-- Optional JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#AdvancedOptions').on('show.bs.collapse', function() {
-                $('button[data-target="#AdvancedOptions"]').find('i').removeClass('bi-chevron-double-down').addClass('bi-chevron-double-up');
-            });
-            $('#AdvancedOptions').on('hide.bs.collapse', function() {
-                $('button[data-target="#AdvancedOptions"]').find('i').removeClass('bi-chevron-double-up').addClass('bi-chevron-double-down');
-            });
+{% block title %} Search {% endblock %}
+
+<!-- Head content -->
+{% block head %}
+<style>
+    .video-container {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        height: 0;
+        overflow: hidden;
+        max-width: 100%;
+        background: #000;
+    }
+    .video-container video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .thumbnail {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    .info {
+        padding: 10px;
+        text-align: center;
+    }
+    .info a {
+        text-decoration: none;
+    }
+    .info a:hover {
+        text-decoration: underline;
+    }
+    .no-results {
+        text-align: center;
+        font-size: 18px;
+    }
+    #AdvancedOptions {
+        margin-top: 10px;
+    }
+</style>
+{% endblock %}
+
+<!-- Body content -->
+{% block content %}
+
+<h1 class="my-4">Search Clips</h1>
+<form action="/search" method="get" class="mb-4">
+    <div class="form-row">
+        <div class="input-group col">
+            <input type="text" name="query" class="form-control" placeholder="Enter search term">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+        <div class="col-md-auto">
+            <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#AdvancedOptions" aria-expanded="false" aria-controls="AdvancedOptions">
+                Advanced
+                <i class="bi bi-chevron-double-down"></i>
+            </button>
+        </div>
+    </div>
+    <div id="AdvancedOptions" class="form-row collapse">
+        <div class="input-group col">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Start Date:</span>
+            </div>
+            <input type="date" name="start-date" class="form-control">
+        </div>
+        <div class="input-group col">
+            <div class="input-group-prepend">
+                <span class="input-group-text">End Date:</span>
+            </div>
+            <input type="date" name="end-date" class="form-control">
+        </div>
+        <div class="col-md-auto">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Game:</span>
+                </div>
+                <select name="game" class="form-control">
+                    <option value="">All Games</option>
+                    {% for game in games %}
+                    <option value="{{ game.game_id }}">{{ game.game_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="row">
+    {% if clips %}
+        {% for clip in clips %}
+        <div class="col-md-6 mb-4">
+            <div class="grid-item">
+                <a href="{{ url_for('clip', clip_id=clip.clip_id) }}">
+                    <img src="{{ clip.thumbnail_url }}" alt="{{ clip.title }}" class="thumbnail">
+                </a>
+                <div class="info">
+                    <a href="{{ url_for('clip', clip_id=clip.clip_id) }}">{{ clip.title }}</a>
+                    <p>{{ clip.creator_name }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        {% if empty_search %}
+            <p class="no-results">Enter a search to get started</p>
+        {% else %}
+            <p class="no-results">No results found.</p>
+        {% endif %}
+    {% endif %}
+</div>
+<p><a href="/" class="btn btn-secondary">Back to Home</a></p>
+
+{% endblock %}
+
+<!-- Scripts content -->
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        $('#AdvancedOptions').on('show.bs.collapse', function() {
+            $('button[data-target="#AdvancedOptions"]').find('i').removeClass('bi-chevron-double-down').addClass('bi-chevron-double-up');
         });
-    </script>
-    
-</body>
-</html>
+        $('#AdvancedOptions').on('hide.bs.collapse', function() {
+            $('button[data-target="#AdvancedOptions"]').find('i').removeClass('bi-chevron-double-up').addClass('bi-chevron-double-down');
+        });
+    });
+</script>
+{% endblock %}
+
