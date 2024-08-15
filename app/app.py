@@ -62,7 +62,7 @@ def search_clips():
 def clip(clip_id):
     db = get_db_connection()
     cursor = db.cursor(dictionary=True)
-    query = """
+    main_query = """
         SELECT c.clip_id, c.thumbnail_url, c.title, c.creator_name, c.view_count, c.clip_date,
                b.broadcaster_name, g.game_name
         FROM Clips c
@@ -70,8 +70,23 @@ def clip(clip_id):
         JOIN Games g ON c.game_id = g.game_id
         WHERE c.clip_id = %s
     """
-    cursor.execute(query, (clip_id,))
+    related_clips_query = """
+    SELECT 
+        clip_id, 
+        title, 
+        thumbnail_url, 
+        ABS(TIMESTAMPDIFF(MINUTE, clip_date, %s)) AS date_diff,
+        TIMESTAMPDIFF(MINUTE, clip_date, %s) AS date_diff_signed
+    FROM Clips
+        WHERE ABS(TIMESTAMPDIFF(MINUTE, clip_date, %s)) >= 3
+    ORDER BY 
+        date_diff ASC
+    LIMIT 10;
+    """
+    cursor.execute(main_query, (clip_id,))
     clip = cursor.fetchone()
+    cursor.execute(related_clips_query, (clip["clip_date"], clip["clip_date"], clip["clip_date"]))
+    related_clips = cursor.fetchall()
     cursor.close()
 
     if clip:
@@ -80,7 +95,7 @@ def clip(clip_id):
         clip_url = clip['thumbnail_url'][:index] + '.mp4'
         clip['clip_url'] = clip_url
         clip['clip_date'] = clip['clip_date'].strftime('%Y-%m-%d %H:%M:%S')
-        return render_template('clip.html', clip=clip)
+        return render_template('clip.html', clip=clip, related_clips=related_clips)
     else:
         return "Clip not found", 404
 

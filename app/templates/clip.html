@@ -53,6 +53,12 @@
         .btn-custom:hover {
             background-color: #0056b3;
         }
+        .grid-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -71,6 +77,36 @@
             <p><strong>Views:</strong> {{ clip.view_count }}</p>
             <p><strong>Date:</strong> {{ clip.clip_date }}</p>
             <p><a href="/" class="btn btn-custom">Back to Home</a></p>
+        </div>
+        <p>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#relatedclips" aria-expanded="false" aria-controls="relatedclips">
+                Show Related Clips
+            </button>
+        </p>
+        <div class="collapse" id="relatedclips">
+            <div class="row">
+                {% if related_clips %}
+                    {% for clip in related_clips %}
+                    <div class="col-md-6 mb-4">
+                        <div class="grid-item">
+                            <a href="{{ url_for('clip', clip_id=clip.clip_id) }}">
+                                <img src="{{ clip.thumbnail_url }}" alt="{{ clip.title }}" class="thumbnail">
+                            </a>
+                            <div class="info">
+                                <a href="{{ url_for('clip', clip_id=clip.clip_id) }}">{{ clip.title }}</a>
+                                {% if clip.date_diff_signed < 0 %}
+                                    <p>{{ clip.date_diff }} minute(s) before</p>
+                                {% else %}
+                                    <p>{{ clip.date_diff }} minute(s) after</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <p class="no-results">No results found.</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 
