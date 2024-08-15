@@ -1,7 +1,7 @@
 # Clip Search Web App
 A web based solution which allows for the indexing and searching of twitch clips
 
-# Quick Start
+## Quick Start
 After cloning the repository, there are a few steps to get the webapp going
 - Make sure you have some form of docker installed, Docker Desktop, Docker CLI doesn't matter
 - Create a `secrets` folder in the root directory
