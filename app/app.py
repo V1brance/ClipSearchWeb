@@ -63,7 +63,7 @@ def clip(clip_id):
     db = get_db_connection()
     cursor = db.cursor(dictionary=True)
     query = """
-        SELECT c.clip_id, c.thumbnail_url, c.title, c.creator_name, c.view_count, 
+        SELECT c.clip_id, c.thumbnail_url, c.title, c.creator_name, c.view_count, c.clip_date,
                b.broadcaster_name, g.game_name
         FROM Clips c
         JOIN Broadcasters b ON c.broadcaster_id = b.broadcaster_id
@@ -79,6 +79,7 @@ def clip(clip_id):
         index = clip['thumbnail_url'].find('-preview')
         clip_url = clip['thumbnail_url'][:index] + '.mp4'
         clip['clip_url'] = clip_url
+        clip['clip_date'] = clip['clip_date'].strftime('%Y-%m-%d %H:%M:%S')
         return render_template('clip.html', clip=clip)
     else:
         return "Clip not found", 404
