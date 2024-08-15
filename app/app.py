@@ -59,37 +59,43 @@ def search_clips():
 
     games = cursor.fetchall()
 
-    if search_term:
-        try:
-            search_query = """
+    try:
+        search_query = """
             SELECT * FROM Clips
-            WHERE MATCH(title, creator_name) AGAINST(%s IN BOOLEAN MODE)
             """
-            list_of_params = [search_term]
+        
+        list_of_params = []
 
-            if start_date != "":
-                search_query = search_query + " AND clip_date >= %s"
-                list_of_params.append(start_date)
+        if search_term != "":
+            search_query += "WHERE MATCH(title, creator_name) AGAINST(%s IN NATURAL LANGUAGE MODE)"
+            list_of_params.append(search_term)
+        else:
+            search_query += "WHERE 1=1"
 
-            if end_date != "":
-                search_query = search_query + " AND clip_date <= %s"
-                list_of_params.append(end_date)
+        if start_date != "":
+            search_query = search_query + " AND clip_date >= %s"
+            list_of_params.append(start_date)
 
-            if game != "":
-                search_query = search_query + " AND game_id = %s"
-                list_of_params.append(game)
+        if end_date != "":
+            search_query = search_query + " AND clip_date <= %s"
+            list_of_params.append(end_date)
 
-            search_query += ";"
+        if game != "":
+            search_query = search_query + " AND game_id = %s"
+            list_of_params.append(game)
 
+        search_query += ";"
 
-            cursor.execute(search_query, tuple(list_of_params))
+        print(search_query, flush=True)
+        cursor.execute(search_query, tuple(list_of_params))
 
-            clips = cursor.fetchall()
+        clips = cursor.fetchall()
 
-        except Error as e:
-            return jsonify({'error': str(e)}), 500
-        finally:
-            connection.close()
+    except Exception as e:
+        print("ERROR", flush=True)
+        return jsonify({'error'}), 500
+    finally:
+        connection.close()
 
     return render_template('search.html', clips=clips, games=games)
 
