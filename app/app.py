@@ -86,7 +86,6 @@ def search_clips():
 
         search_query += " LIMIT 150;"
 
-        print(search_query, flush=True)
         cursor.execute(search_query, tuple(list_of_params))
 
         clips = cursor.fetchall()
