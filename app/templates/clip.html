@@ -3,6 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:site_name" content="Bradley Dragon Clips">
+    <meta property="og:url" content="{{ request.url }}"> <!-- TODO -->
+    <meta property="og:type" content="video.other">
+    <meta property="og:title" content="{{ clip.title }}">
+    <meta property="og:image" content="{{ clip.thumbnail_url }}">
+    <meta property="og:video" content="{{ clip.clip_url }}">
+    <meta property="og:video:type" content="video/mp4">
+    <meta property="og:video:secure_url" content="{{ clip.clip_url }}">
+    <meta property="og:video:height" content="720">
+    <meta property="og:video:width" content="1280">
+    <meta property="og:image:height" content="720">
+    <meta property="og:image:width" content="1280">
     <title>{{ clip.title }}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
