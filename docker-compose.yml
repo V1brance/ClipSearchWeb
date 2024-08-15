@@ -1,0 +1,42 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "8888"
+    environment:
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+      MYSQL_USER: webapp
+      MYSQL_DATABASE: ClipCache
+    secrets:
+      - mysql_password
+    depends_on:
+      - mysql
+  nginx: 
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
+    ports:
+      - "9000:80"
+  mysql:
+    build: ./mysql/
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_DATABASE: ClipCache
+      MYSQL_USER: webapp
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+    secrets:
+      - mysql_root_password
+      - mysql_password
+
+secrets:
+  mysql_root_password:
+    file: ./secrets/mysql_root_password.txt
+  mysql_password:
+    file: ./secrets/mysql_password.txt
+
+volumes:
+  mysql_data:
