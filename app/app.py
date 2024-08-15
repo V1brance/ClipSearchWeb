@@ -84,11 +84,18 @@ def search_clips():
             search_query = search_query + " AND game_id = %s"
             list_of_params.append(game)
 
+
         search_query += " LIMIT 150;"
 
         cursor.execute(search_query, tuple(list_of_params))
 
         clips = cursor.fetchall()
+
+        if search_term is start_date is end_date is game is None:
+            empty_search = True
+            clips = []
+        else:
+            empty_search = False
 
     except Exception as e:
         print("ERROR", flush=True)
@@ -96,7 +103,7 @@ def search_clips():
     finally:
         connection.close()
 
-    return render_template('search.html', clips=clips, games=games)
+    return render_template('search.html', clips=clips, games=games, empty_search=empty_search)
 
 @app.route('/clip/<clip_id>')
 def clip(clip_id):

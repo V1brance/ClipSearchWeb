@@ -108,7 +108,11 @@
         </div>
         {% endfor %}
     {% else %}
-    <p class="no-results">No results found.</p>
+        {% if empty_search %}
+            <p class="no-results">Enter a search to get started</p>
+        {% else %}
+            <p class="no-results">No results found.</p>
+        {% endif %}
     {% endif %}
 </div>
 <p><a href="/" class="btn btn-secondary">Back to Home</a></p>
