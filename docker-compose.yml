@@ -9,12 +9,13 @@ services:
       MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
       MYSQL_USER: webapp
       MYSQL_DATABASE: ClipCache
+      DEBUG: ${DEBUG}
     secrets:
       - mysql_password
     depends_on:
       - mysql
     volumes:
-      - ./app:/hab/app
+      - ./app:/hab
   nginx: 
     image: nginx:latest
     volumes:
