@@ -128,7 +128,7 @@ def clip(clip_id):
         WHERE ABS(TIMESTAMPDIFF(MINUTE, clip_date, %s)) >= 3
     ORDER BY 
         date_diff ASC
-    LIMIT 10;
+    LIMIT 15;
     """
     cursor.execute(main_query, (clip_id,))
     clip = cursor.fetchone()
@@ -147,4 +147,4 @@ def clip(clip_id):
         return "Clip not found", 404
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run()
