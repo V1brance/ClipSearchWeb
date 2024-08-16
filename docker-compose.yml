@@ -13,6 +13,8 @@ services:
       - mysql_password
     depends_on:
       - mysql
+    volumes:
+      - ./app:/hab/app
   nginx: 
     image: nginx:latest
     volumes:
