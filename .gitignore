@@ -1,3 +1,4 @@
 secrets/
 backup.sql
 venv/
+app/__pycache__/
